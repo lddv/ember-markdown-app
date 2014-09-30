@@ -1,153 +1,20 @@
 App = Ember.Application.create();
 
 App.Router.map(function() {
-  this.resource('book', { path: '/books/:book_id' });
-  this.resource('genre', { path: '/genres/:genre_id' });
-  this.resource('reviews', function(){
-    this.route('new');
-  });
 });
 
-App.IndexRoute = Ember.Route.extend({
-  model: function() {
-    return Ember.RSVP.hash({
-      books: this.store.findAll('book'),
-      genres: this.store.findAll('genre')
-    });
-  },
-  setupController: function(controller, model){
-    controller.set('books', model.books);
-    controller.set('genres', model.genres);
-  }
+var files = [{
+  id: 'rails-is-omakase',
+  title: "Rails is Omakase",
+  author: 'D2H',
+  contents: "There are lots of à la carte software environments in this world. Places where in order to eat, you must first carefully look over the menu of options to order exactly what you want. I want this for my ORM, I want that for my template language, and let's finish it off with this routing library. Of course, you're going to have to know what you want, and you'll rarely have your horizon expanded if you always order the same thing, but there it is. It's a very popular way of consuming software."
+}, {
+  id: 'why-ruby',
+  title: "Why Ruby?",
+  author: 'CodingHorror',
+  contents: "I've been a Microsoft developer for decades now. I weaned myself on various flavors of home computer Microsoft Basic, and I got my first paid programming gigs in Microsoft FoxPro, Microsoft Access, and Microsoft Visual Basic. I have seen the future of programming, my friends, and it is terrible CRUD apps running on Wintel boxes!"
+}];
+
+files.forEach(function(file) {
+  files[file.id] = file;
 });
-
-// Default behavior !!!
-// App.BookRoute = Ember.Route.extend({
-//   model: function(params) {
-//     return this.store.find('book', params.book_id);
-//   }
-// });
-
-App.ReviewsNewRoute = Ember.Route.extend({
-  model: function() {
-    return Ember.RSVP.hash({
-      book: this.store.createRecord('book'),
-      genres: this.store.findAll('genre')
-    });
-  },
-  setupController: function(controller, model){
-    controller.set('model', model.book);
-    controller.set('genres', model.genres);
-  },
-  actions: {
-    willTransition: function(transition){
-      if (this.currentModel.book.get('isNew')) {
-        if (confirm("Are you sure you want to abandon progress?")) {
-          this.currentModel.book.destroyRecord();
-        } else {
-          transition.abort();
-        }
-      }
-    }
-  }
-});
-
-App.IndexController = Ember.Controller.extend({});
-
-App.BooksController = Ember.ArrayController.extend({
-  sortProperties: ['title']
-});
-
-App.GenresController = Ember.ArrayController.extend({
-  sortProperties: ['name']
-});
-
-App.ReviewsNewController = Ember.Controller.extend({
-  ratings: [5,4,3,2,1],
-  actions: {
-    createReview: function(){
-      var controller = this;
-      this.get('model').save().then(function(){
-        controller.transitionToRoute('index');
-      });
-    }
-  }
-});
-
-App.ApplicationAdapter = DS.FixtureAdapter.extend();
-
-App.BookDetailsComponent = Ember.Component.extend({
-  classNameBindings: ['ratingClass'],
-  ratingClass: function(){
-    return 'rating-'+this.get('book.rating');
-  }.property('book.rating')
-});
-
-App.Book = DS.Model.extend({
-  title: DS.attr(),
-  author: DS.attr(),
-  review: DS.attr(),
-  rating: DS.attr('number'),
-  amazon_id: DS.attr(),
-  genre: DS.belongsTo('genre'),
-  url: function(){
-    return "http://www.amazon.com/gp/"+this.get('amazon_id')+"/otherstuff";
-  }.property('amazon_id'),
-  image: function(){
-    return "http://images.amazon.com/images/P/"+this.get('amazon_id')+".01.ZTZZZZZZ.jpg";
-  }.property('amazon_id')
-});
-
-App.Book.FIXTURES = [
-  {
-    id: 1,
-    title: 'Mindstorms',
-    author: 'Seymour A. Papert',
-    review: 'bla bla bla from Mindstorms',
-    rating: 5,
-    amazon_id: '0465046746',
-    genre: 3,
-    url: 'http://www.amazon.com/Mindstorms-Children-Computers-Powerful-Ideas/dp/0465046746',
-    image: 'img/mindstorms.jpg'
-  },
-  {
-    id: 2,
-    title: 'Hyperion',
-    author: 'Dan Simmons',
-    review: 'bla bla bla from Hyperion',
-    rating: 5,
-    amazon_id: '0553283685',
-    genre: 1
-  },
-  {
-    id: 3,
-    title: 'Jony Ive',
-    author: 'Leander Kahney',
-    review: 'bla bla bla from Jony Ive',
-    rating: 2,
-    amazon_id: '159184617X',
-    genre: 3
-  }
-];
-
-App.Genre = DS.Model.extend({
-  name: DS.attr(),
-  books: DS.hasMany('book', {async: true})
-});
-
-App.Genre.FIXTURES = [
-  {
-    id: 1,
-    name: 'Science Fiction',
-    books: [2]
-  },
-  {
-    id: 2,
-    name: 'Fiction'
-  },
-  {
-    id: 3,
-    name: 'Non-Fiction',
-    books: [1,3]
-  }
-];
