@@ -2,14 +2,15 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Ember Reading List</title>
+  <title>Ember Markdown App</title>
   <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <script type="text/x-handlebars" data-template-name="application">
     <div class='container'>
-      <h1>Reading List</h1>
+      {{input type="text" value=name}}
+      <h1>Markdown files by {{name}}</h1>
 
       {{outlet}}
       <hr>
