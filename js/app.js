@@ -14,7 +14,7 @@ var files = [{
   id: 'why-ruby',
   title: "Why Ruby?",
   author: 'CodingHorror',
-  contents: "I've been a Microsoft developer for decades now. I weaned myself on various flavors of home computer Microsoft Basic, and I got my first paid programming gigs in Microsoft FoxPro, Microsoft Access, and Microsoft Visual Basic. I have seen the future of programming, my friends, and it is terrible CRUD apps running on Wintel boxes!"
+  contents: "I've been a Microsoft developer for decades now. I weaned myself on various flavors of [home computer Microsoft Basic](http://blog.codinghorror.com/everything-i-needed-to-know-about-programming-i-learned-from-basic/), and I got my first paid programming gigs in Microsoft FoxPro, Microsoft Access, and Microsoft Visual Basic. I have seen the future of programming, my friends, and it is terrible CRUD apps running on Wintel boxes!"
 }];
 
 files.forEach(function(file) {
@@ -44,4 +44,11 @@ App.ApplicationController = Ember.Controller.extend({
   saveName: function(value){
     localStorage.appName = value;
   }
+});
+
+// HELPERS
+
+Ember.Handlebars.helper('markdown', function(value){
+  var converter = new Showdown.converter();
+  return new Handlebars.SafeString(converter.makeHtml(value));
 });
