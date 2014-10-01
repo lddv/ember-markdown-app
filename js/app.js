@@ -48,6 +48,17 @@ App.ApplicationController = Ember.Controller.extend({
   }
 });
 
+App.FileController = Ember.ObjectController.extend({
+  isEditing: false,
+
+  edit: function(){
+    this.set('isEditing', true);
+  },
+  done: function(){
+    this.set('isEditing', false);
+  }
+});
+
 // HELPERS
 
 Ember.Handlebars.helper('markdown', function(value){
