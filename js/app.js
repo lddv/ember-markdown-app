@@ -18,3 +18,11 @@ var files = [{
 files.forEach(function(file) {
   files[file.id] = file;
 });
+
+// CONTROLLERS
+
+App.ApplicationController = Ember.Controller.extend({
+  saveName: function(value){
+    localStorage.appName = value;
+  }
+});
