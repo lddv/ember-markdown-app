@@ -22,6 +22,9 @@ files.forEach(function(file) {
 // CONTROLLERS
 
 App.ApplicationController = Ember.Controller.extend({
+  init: function(){
+    this.set('name', localStorage.appName);
+  },
   saveName: function(value){
     localStorage.appName = value;
   }
