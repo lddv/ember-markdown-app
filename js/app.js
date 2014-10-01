@@ -2,6 +2,7 @@ App = Ember.Application.create();
 
 App.Router.map(function() {
   this.resource('files');
+  this.resource('file', { path: '/files/:file_id' });
 });
 
 var files = [{
@@ -18,6 +19,20 @@ var files = [{
 
 files.forEach(function(file) {
   files[file.id] = file;
+});
+
+// ROUTES
+
+App.FilesRoute = Ember.Route.extend({
+  model: function(){
+    return files;
+  }
+});
+
+App.FileRoute = Ember.Route.extend({
+  model: function(params){
+    return files[params.file_id];
+  }
 });
 
 // CONTROLLERS

@@ -11,12 +11,8 @@
     <div class='container'>
       {{input type="text" value=name action="saveName"}}
       <h1>Markdown files by {{name}}</h1>
-
-      {{outlet}}
       <hr>
-      <div class='row'>
-        
-      </div>
+      {{outlet}}
     </div>
   </script>
 
@@ -26,11 +22,21 @@
         <div class="span12">
           <table class="table">
           <tr><td>Files</td></tr>
+          {{#each file in model}}
+          <tr><td>{{file.title}} by {{file.author}}</td></tr>
+          {{/each}}
           </table>
         </div>
       </div>
     </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="file">
+    <h2>{{title}}</h2>
+    <h3>by {{author}}</h3>
+
     <div>
+      {{contents}}
     </div>
   </script>
 
