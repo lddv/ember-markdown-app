@@ -1,8 +1,10 @@
 App = Ember.Application.create();
 
 App.Router.map(function() {
-  this.resource('files');
-  this.resource('file', { path: '/files/:file_id' });
+  this.resource('files', function(){
+    this.resource('file', { path: ':file_id' });
+  });
+  
 });
 
 var files = [{

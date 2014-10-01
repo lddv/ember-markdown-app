@@ -17,9 +17,9 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="files">
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
           <table class="table">
             <tr><td>Files</td></tr>
             {{#each file in model}}
@@ -30,6 +30,9 @@
             </td></tr>
             {{/each}}
           </table>
+        </div>
+        <div class="col-md-9">
+          {{outlet}}
         </div>
       </div>
     </div>
